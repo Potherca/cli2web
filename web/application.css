@@ -1,0 +1,38 @@
+
+input::-webkit-calendar-picker-indicator {
+  color: #209cee;
+  height: 1em;
+  width: 1em;
+  background-color: white;
+}
+
+.card {
+  display: inline-block;
+  margin: 2em;
+  vertical-align:top;
+  width: 24em;
+  word-wrap: break-word;
+}
+
+.card-content {
+  background: #ffd;
+  font-family: monospace;
+}
+
+.card-header a,
+.card-footer-item > a {
+  display: block;
+  line-height: 200%;
+  width: 100%;
+}
+
+form.card-footer-item {
+  padding: 0;
+  margin: 0;
+}
+
+form.card-footer-item button {
+  width: 100%;
+  outline: 1px solid;
+  height: 3em;
+}
