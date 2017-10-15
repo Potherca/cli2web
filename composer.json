@@ -1,0 +1,30 @@
+{
+    "name": "potherca/github-find-typos",
+    "description": "Finding typo's in the most popular github repositories made easy.",
+    "type": "project",
+    "homepage": "https://blog.pother.ca/github-find-typos",
+    "license": "GPL-3.0",
+    "authors": [
+        {
+            "name": "Ben Peachey",
+            "email": "potherca@hotmail.com",
+            "homepage": "https://pother.ca/"
+        }
+    ],
+    "support": {
+        "source": "https://github.com/potherca-blog/github-find-typos"
+    },
+    "require": {
+        "mustache/mustache": "^2.12",
+        "vlucas/phpdotenv": "^2.4"
+    },
+    "autoload":{
+      "psr-4"  : {
+          "Potherca\\GiFiTy\\": "src/"
+      }
+    },
+    "config":{
+        "bin-dir":"bin",
+        "sort-packages": true
+    }
+}
