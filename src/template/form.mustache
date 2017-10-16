@@ -1,7 +1,7 @@
     <form accept-charset="utf-8" action="" enctype="multipart/form-data" method="get" spellcheck="false">
 
-        <fieldset class="box  has-text-centered">
-          <legend class="label">Select a typo from the list or invent one yourself</legend>
+        <fieldset class="box has-text-centered">
+          {{!--<legend class="label">Select a typo from the list or invent one yourself</legend>--}}
 
           <div class="control select">
             <input 
@@ -29,6 +29,31 @@
             </span>
           </button>
         </fieldset>
-        <small>source: https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machines</small>
+
+        {{!--<small>source: https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machines</small>--}}
+
+        {{# has-options }}
+        <details class="options has-text-right">
+
+          <summary class="button is-info is-outlined is-centered">
+            Options
+          </summary>
+          {{# options }}
+            {{# is-boolean }}
+            <div class="box has-text-left">
+              <input
+                class="switch is-rounded is-info is-medium"
+                id="{{ name }}"
+                name="{{ name }}"
+                type="checkbox"
+              />
+              <label for="{{ name }}">
+                {{ label }}
+              </label>
+            </div>
+            {{/ is-boolean }}
+          {{/ options }}
+        </details>
+        {{/ has-options }}
 
     </form>
