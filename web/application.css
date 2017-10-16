@@ -36,3 +36,40 @@ form.card-footer-item button {
   outline: 1px solid;
   height: 3em;
 }
+
+
+/* Give the text next to the toggle switch a bit more space */
+.switch[type="checkbox"].is-medium+label {
+  display: inline-block;
+  line-height: 2rem;
+  padding-left: 5rem;
+  width: calc(100% - 5rem);
+}
+
+/* Make the <detail> toggle look a bit nicer */
+.options summary.box {
+  display: inline-block;
+  cursor: pointer;
+  margin-bottom: 0;
+}
+
+.options[open] summary {
+  margin-bottom: 2em;
+}
+
+.options summary::-webkit-details-marker {
+  display: none;
+}
+
+.options summary::before {
+  content: 'Show';
+  padding-right: 0.5rem;
+}
+
+.options[open] summary::before {
+  content: 'Hide';
+}
+
+.options .box:hover {
+  background-color: #D0EAFB;
+}
