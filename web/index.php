@@ -17,6 +17,8 @@ if (is_readable($projectPath . '/.env')) {
 }
 
 /* Load GET/POST parameters  */
+/* @FIXME: Set "options" from $_GET params! */
+/* @TODO: If any of the "options" has a value, the <DETAILS> should be expande */
 $query = $_GET['q']?:'';
 /* Only grab the first word */
 $query = array_shift(explode(' ', $query));
@@ -30,10 +32,12 @@ $context = create_context(
     'project' => ['author' => 'Potherca', 'version' => 'v0.1.0'],
     'stylesheets' => [
       'https://pother.ca/CssBase/css/created-by-potherca.css',
+      /*/ GiFiTy Project specific values /*/
+      '/bulma-switch.css',
       '/application.css',
     ],
 
-    /*/ Project specific values /*/
+    /*/ GiFiTy Project specific values /*/
     'description' => 'Fill in your faborite typing mistake (typo) in the field below and press the buttin',
     'title' => 'Find Typos on Github',
   ]
@@ -56,6 +60,12 @@ $results = fetch_results($query);
 $formHtml = $templatEngine->render($formTemplate, [
   'query' => $query,
   'typo-list' => $typos,
+  'has-options' => true,
+  'options' => [
+    ['name' => 'show-duplicates', 'label' => 'Show duplicates', 'is-flag' => true],
+    ['name' => 'show-false-positives', 'label' => 'Show false positives', 'is-flag' => true],
+    ['name' => 'skip-typo-check', 'label' => 'Skip typo check', 'is-flag' => true],
+  ],
 ]);
 
 $resultHtml = $templatEngine->render($resultTemplate, [
@@ -194,6 +204,7 @@ function fetch_results($query) {
   array_walk($results, function (&$result) {
     $parts = explode('/', $result['file_url']);
     $parts['5'] = 'edit';   // blob
+    // @FIXME: The main branch MIGHT not be `master`, replace hard-coded value with brach from response object
     $parts['6'] = 'master'; // SHA1 hash
     $result['edit-url'] = implode('/', $parts);
   });
