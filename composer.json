@@ -21,7 +21,11 @@
     "autoload":{
       "psr-4"  : {
           "Potherca\\GiFiTy\\": "src/"
-      }
+      },
+      "files" : [
+          "src/function.create_context.php",
+          "src/function.fetch_results.php"
+      ]
     },
     "config":{
         "bin-dir":"bin",
