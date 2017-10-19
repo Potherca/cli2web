@@ -20,7 +20,7 @@
     },
     "autoload":{
       "psr-4"  : {
-          "Potherca\\GiFiTy\\": "src/"
+          "Potherca\\WebApplication\\Generic\\": "src/"
       },
       "files" : [
           "src/function.create_context.php",

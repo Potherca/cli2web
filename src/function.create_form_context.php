@@ -1,6 +1,6 @@
 <?php
 
-namespace Potherca\GiFiTy;
+namespace Potherca\WebApplication\Generic;
 
 function create_form_context($arguments)
 {

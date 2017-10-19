@@ -1,6 +1,6 @@
 <?php
 
-namespace Potherca\GiFiTy;
+namespace Potherca\WebApplication\Generic;
 
 use Dotenv\Dotenv;
 use Mustache_Engine;
@@ -12,7 +12,7 @@ $projectPath = dirname(__DIR__);
 // -----------------------------------------------------------------------------
 require $projectPath.'/src/GiFiTy/function.fetch_results.php';
 
-$callback = 'Potherca\\GiFiTy\\fetch_results';
+$callback = '\\Potherca\\GiFiTy\\fetch_results';
 $interface = [
   'submit-name' => 'Search',
   'submit-icon' => 'search',
