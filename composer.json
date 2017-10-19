@@ -24,7 +24,8 @@
       },
       "files" : [
           "src/function.create_context.php",
-          "src/function.fetch_results.php"
+          "src/function.create_form_context.php",
+          "src/function.load_values.php"
       ]
     },
     "config":{
