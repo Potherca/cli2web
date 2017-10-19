@@ -70,6 +70,10 @@ form.card-footer-item button {
   content: 'Hide';
 }
 
-.options .box:hover {
+.options .control:hover {
   background-color: #D0EAFB;
+}
+
+.options .field-label {
+  flex-grow: 5;
 }
