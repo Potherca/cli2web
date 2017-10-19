@@ -1,58 +1,34 @@
     <form accept-charset="utf-8" action="" enctype="multipart/form-data" method="get" spellcheck="false">
 
         <fieldset class="box has-text-centered">
-          {{!--<legend class="label">Select a typo from the list or invent one yourself</legend>--}}
 
-          <div class="control select">
-            <input 
-              class="input is-large" 
-              type="text" 
-              list="typos" 
-              name="q" 
-              placeholder="Spellng misaake" 
-              value="{{ query }}"
-            />
-          </div>
+          {{# arguments }}
+            {{> arguments }}
+          {{/ arguments }}
 
-          <datalist id="typos">
-            {{# typo-list }}
-            <option value="{{ . }}">
-            {{/ typo-list }}
-          </datalist>
+          {{^ single-argument  }}
+            {{> submit-button }}
+          {{/ single-argument  }}
 
-          <button type="submit" class="button is-info is-large">
-            <span class="icon" aria-hidden="true">
-              <i class="fa fa-search"></i>
-            </span>
-            <span>
-              Search
-            </span>
-          </button>
         </fieldset>
 
-        {{!--<small>source: https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machines</small>--}}
-
         {{# has-options }}
-        <details class="options has-text-right">
+        <details class="options has-text-right"{{# has-option-selected}} open{{/ has-option-selected}}>
 
           <summary class="button is-info is-outlined is-centered">
             Options
           </summary>
-          {{# options }}
-            {{# is-flag }}
-            <div class="box has-text-left">
-              <input
-                class="switch is-rounded is-info is-medium"
-                id="{{ name }}"
-                name="{{ name }}"
-                type="checkbox"
-              />
-              <label for="{{ name }}">
-                {{ label }}
-              </label>
-            </div>
-            {{/ is-flag }}
-          {{/ options }}
+
+          <div class="box has-text-left">
+            {{# flags }}
+              {{> flags }}
+            {{/ flags }}
+
+            {{# options }}
+              {{> options }}
+            {{/ options }}
+          </div>
+
         </details>
         {{/ has-options }}
 

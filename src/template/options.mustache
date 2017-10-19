@@ -1,0 +1,24 @@
+
+<div class="field is-horizontal">
+  <div class="field-label is-medium">
+    <label class="label is-medium" for="{{ name }}" title="{{ description }}">
+      {{ label }}
+    </label>
+  </div>
+  <div class="field-body">
+    <div class="field">
+      <div class="control is-pulled-left">
+      <input
+          class="input is-info"
+          id="{{ name }}"
+          name="{{ name }}"
+          type="{{ type }}"
+          {{# value }}value="{{ value }}"{{/ value }}
+          {{^ value}}{{# default }}data-value="{{ default }}"{{/ default }}{{/ value }}
+          {{# default }}placeholder="{{ default }}"{{/ default }}
+        />
+      </div>
+      <p class="help is-info">{{ description }}</p>
+    </div>
+  </div>
+</div>

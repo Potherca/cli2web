@@ -1,0 +1,26 @@
+
+<div class="field is-horizontal">
+  <div class="field-label is-medium">
+    <label class="label is-medium" for="{{ name }}" title="{{ description }}">
+      {{ label }}
+    </label>
+  </div>
+  <div class="field-body">
+    <div class="field">
+      <div class="control">
+        <input
+          data-class="input is-info"
+          data-type="{{ type }}"
+          class="switch is-rounded is-info is-medium"
+          id="{{ name }}"
+          name="{{ name }}"
+          type="checkbox"
+          value="true"
+          {{# value }}checked{{/ value }}
+        />
+        <label class="label is-medium" for="{{ name }}" title="{{ description }}">&nbsp;</label>
+      </div>
+      <p class="help is-info">{{ description }}</p>
+    </div>
+  </div>
+</div>

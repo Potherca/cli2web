@@ -1,0 +1,41 @@
+
+{{!--<legend class="label">Select a typo from the list or invent one yourself</legend>--}}
+
+<div class="field is-horizontal">
+    {{# label }}
+    <div class="field-label is-medium">
+        <label class="label is-medium" for="{{ name }}" title="{{ description }}">
+        {{ label }}
+        </label>
+    </div>
+    {{/ label }}
+    <div class="field-body">
+        <div class="field {{# single-argument }}has-addons{{/ single-argument }}">
+            <div class="control is-expanded">
+                <input 
+                    class="input is-large" 
+                    type="{{ type }}" 
+                    {{# has-autocomplete }}list="{{ name }}-autocomplete"{{/ has-autocomplete }}
+                    name="{{ name }}" 
+                    placeholder="{{ example }}" 
+                    {{# value }}value="{{ value }}"{{/ value }}
+                    {{^ value}}{{# default }}value="{{ default }}"{{/ default }}{{/ value }}
+                />
+                <p class="help is-info">{{ description }}</p>
+            </div>
+
+            <div class="control">
+                {{> submit-button }}
+            </div>
+        </div>
+    </div>
+</div>
+
+{{# has-autocomplete }}
+<datalist id="{{ name }}-autocomplete">
+    {{# autocomplete }}
+    <option value="{{ . }}">
+    {{/ autocomplete }}
+</datalist>
+{{/ has-autocomplete }}
+
