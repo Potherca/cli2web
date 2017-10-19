@@ -4,6 +4,8 @@ namespace Potherca\GiFiTy;
 
 function create_context(array $composer, $userContext)
 {
+  $context = [];
+
   /* All of the keys available from the generic application template */
   $defaults = [
     /* Application level values  */
@@ -27,7 +29,7 @@ function create_context(array $composer, $userContext)
     /* Page specific values */
     'content' => '',            // HTML content to be placed on the page
     'javascript-inline' => '',  // Page-specific <SCRIPT>
-    'messages' => [],           // User mesages ['message' => '', '' => 'details' type' => 'primary |  link |  info | success | warning | danger'] 
+    'messages' => [],           // User mesages ['message' => '', '' => 'details' type' => 'primary |  link |  info | success | warning | danger']
     'stylesheet-inline' => '',  // Page-specific <STYLE>
   ];
 
@@ -63,16 +65,9 @@ function create_context(array $composer, $userContext)
   /* Enhance data */
   if (isset($context['project']['source-url'])) {
     $context['project']['source'] = ucfirst(preg_replace('/^(?:[^.]+\.)*([^.]+)\..*$/', '$1', parse_url($context['project']['source-url'], PHP_URL_HOST)));
-  }  
+  }
 
   return $context;
-
-  $projectContext = [
-    'project' => [
-      'source-url' => $composer['homepage'], // might not be set?
-      'version' => $version,
-    ],
-  ];
 }
 
 /*EOF*/
