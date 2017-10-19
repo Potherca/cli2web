@@ -1,63 +1,40 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ page-title }}{{^ page-title }}{{ title }}{{/ page-title }}</title>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ page-title }}{{^ page-title }}{{ title }}{{/ page-title }}</title>
 
-    {{# stylesheets }}
-    <link rel="stylesheet" href="{{ . }}">
-    {{/ stylesheets }}
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.0/css/bulma.min.css" integrity="sha256-HEtF7HLJZSC3Le1HcsWbz1hDYFPZCqDhZa9QsCgVUdw=" crossorigin="anonymous" /> 
+  {{# stylesheets }}
+  <link rel="stylesheet" href="{{ . }}">
+  {{/ stylesheets }}
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.0/css/bulma.min.css" integrity="sha256-HEtF7HLJZSC3Le1HcsWbz1hDYFPZCqDhZa9QsCgVUdw=" crossorigin="anonymous" />
 
-    <style type="text/css">
-        html {
-        background-color: #e7f4fd;
-      }
-      .hero .box {
-        background-color: #d0eafb;
-      }
+  <style type="text/css">
+      html {
+      background-color: #e7f4fd;
+    }
+    .hero .box {
+      background-color: #d0eafb;
+    }
 
-      .footer {
-        bottom: 0;
-        padding-bottom: 2rem;
-        padding-top: 1rem;
-        position: fixed;
-        width: 100%;
-      }
-    {{# stylesheet-inline }}
-      {{& stylesheet-inline }}
-    {{/ stylesheet-inline }}
-    </style>
-  </head>
-  <body>
+    .footer {
+      bottom: 0;
+      padding-bottom: 2rem;
+      padding-top: 1rem;
+      position: fixed;
+      width: 100%;
+    }
+  {{# stylesheet-inline }}
+    {{& stylesheet-inline }}
+  {{/ stylesheet-inline }}
+  </style>
+</head>
 
-  <header class="hero is-white has-text-centered">
-    {{# title }}
-    <h1 class="title has-text-info">
-      {{# title-link}}
-      <a href="#{{ title-link }}">
-        {{ title }}
-      </a>
-      {{/ title-link}}
-      {{^ title-link}}
-        {{ title }}
-      {{/ title-link}}
-    </h1>
-    {{/ title }}
+<body>
 
-    {{# sub-title }}
-    <span class="subtitle has-text-grey-light">
-      {{ sub-title }}
-    </span>
-    {{/ sub-title }}
-    {{# description }}
-    <p class="box message is-primary">
-      {{ description }}
-    </p>
-    {{/ description }}
-  </header>
+  {{> application-header }}
 
   <section class="section coloumns column is-10 is-offset-1">
     {{# messages }}
@@ -76,31 +53,26 @@
     </div>
     {{/ messages }}
 
-    {{& content }}
-  </section>
-  
-  <footer class="footer has-text-right">
-    {{# project }}
-      {{# version }}<span class="version">{{ version }}</span> &ndash;{{/ version }}
-      The Source Code for this project is available
-      {{# source-url }}<a href="{{ source-url }}"> on {{ source }}</a>{{/ source-url }}
-      {{# license }}under a <a href="https://spdx.org/licenses/{{ license }}.html" rel="license" target="_blank">{{ license }} License</a>{{/ license }}
+    {{> form }}
 
-      {{# author }}
-      &ndash;
-      <a {{# author-url }}href="{{ author-url }}" {{/ author-url }}class="created-by">
-        Created by 
-        <span class="{{ author }}">{{ author }}</span>
-      </a>
-      {{/ author }}
-    {{/ project }}
-  </footer>
-  
-    {{# javascript }}
-      <script src="{{ . }}"></script>
-    {{/ javascript }}
-    {{# javascript-inline }}
-      <script>{{& javascript-inline }}</script>
-    {{/ javascript-inline }}
-  </body>
+    {{# results}}
+    <div class="results has-text-centered">
+        <h2 class="title">Search Results ({{ results }})</h2>
+
+        {{# result-list }}
+          {{> result }}
+        {{/ result-list }}
+    </div>
+    {{/ results}}
+  </section>
+
+  {{> application-footer }}
+
+  {{# javascript }}
+    <script src="{{ . }}"></script>
+  {{/ javascript }}
+  {{# javascript-inline }}
+    <script>{{& javascript-inline }}</script>
+  {{/ javascript-inline }}
+</body>
 </html>
