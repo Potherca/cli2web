@@ -7,8 +7,27 @@ use Mustache_Engine;
 
 $projectPath = dirname(__DIR__);
 
+// =============================================================================
+/*/ Specfic Configuration /*/
+// -----------------------------------------------------------------------------
+require $projectPath.'/src/GiFiTy/function.fetch_results.php';
+
+$callback = 'Potherca\\GiFiTy\\fetch_results';
+$interface = [
+  'submit-name' => 'Search',
+  'submit-icon' => 'search',
+];
+$parameters = require $projectPath.'/src/GiFiTy/config.command.php';
+$resultTemplate = file_get_contents($projectPath.'/src/GiFiTy/result.mustache');
+// =============================================================================
+
+// =============================================================================
+/*/ Generic logic /*/
+// -----------------------------------------------------------------------------
+
 require $projectPath.'/vendor/autoload.php';
 
+// -----------------------------------------------------------------------------
 /* Load `.env` */
 if (is_readable($projectPath . '/.env')) {
   $dotenv = new Dotenv($projectPath, '.env');
@@ -16,17 +35,23 @@ if (is_readable($projectPath . '/.env')) {
   unset($dotenv);
 }
 
-/* Load GET/POST parameters  */
-/* @FIXME: Set "options" from $_GET params! */
-/* @TODO: If any of the "options" has a value, the <DETAILS> should be expande */
-$query = $_GET['q']?:'';
-/* Only grab the first word */
-$query = array_shift(explode(' ', $query));
+// -----------------------------------------------------------------------------
+/* Load GET parameters  */
+$arguments = load_values($parameters, [
+  'search-term' => function ($searchTerm) {
+    /* Only grab the first word */
+    return array_shift(explode(' ', $searchTerm));
+  },
+]);
 
+// -----------------------------------------------------------------------------
+/* Create the result  */
+$results = $callback($arguments);
+
+// -----------------------------------------------------------------------------
 /* Load $context from `composer.json` */
-$composer = json_decode(file_get_contents($projectPath.'/composer.json'), true);
 $context = create_context(
-  $composer, 
+  json_decode(file_get_contents($projectPath.'/composer.json'), true),
   [
     /*/ Generic for all Potherca (blog) projects /*/
     'project' => ['author' => 'Potherca', 'version' => 'v0.1.0'],
@@ -43,61 +68,37 @@ $context = create_context(
   ]
 );
 
+
+
+// =============================================================================
 /* Load templates */
-$applicationTemplate = file_get_contents(dirname(__DIR__).'/src/template/application.mustache');
-$formTemplate = file_get_contents(dirname(__DIR__).'/src/template/form.mustache');
-$resultTemplate = file_get_contents(dirname(__DIR__).'/src/template/results.mustache');
-
-$typos = require dirname(__DIR__).'/src/typo-list.php';
-
+// -----------------------------------------------------------------------------
 /* Create objects*/
-$templatEngine = new Mustache_Engine();
-
-/* Get data */
-$results = fetch_results($query);
-
-/* Feed data to sub-template  */
-$formHtml = $templatEngine->render($formTemplate, [
-  'query' => $query,
-  'typo-list' => $typos,
-  'has-options' => true,
-  'options' => [
-    ['name' => 'show-duplicates', 'label' => 'Show duplicates', 'is-flag' => true],
-    ['name' => 'show-false-positives', 'label' => 'Show false positives', 'is-flag' => true],
-    ['name' => 'skip-typo-check', 'label' => 'Skip typo check', 'is-flag' => true],
-  ],
+$templatEngine = new \Mustache_Engine([
+    // This loader is used for both the original template and the partials.
+    'loader' => new \Mustache_Loader_FilesystemLoader($projectPath.'/src/template/'),
+    // For partials stored in another directory, a loader specifically for partials is needed
+    'partials_loader' => new \Mustache_Loader_CascadingLoader([
+      new \Mustache_Loader_FilesystemLoader($projectPath.'/src/template/'),
+      new \Mustache_Loader_ArrayLoader(['result' =>  $resultTemplate,]),
+    ]),
 ]);
 
-$resultHtml = $templatEngine->render($resultTemplate, [
+// -----------------------------------------------------------------------------
+/* Create the Form context */
+$form = create_form_context($arguments);
+$form = array_merge($form, $interface);
+
+// -----------------------------------------------------------------------------
+/* Create Result context */
+$context = array_merge($context, [
   'results' => count($results),
   'result-list' => $results,
-]);
+], $form);
 
-$context['content'] = $formHtml.$resultHtml;
-
+// -----------------------------------------------------------------------------
 /* Feed data to main template */
-echo $templatEngine->render($applicationTemplate, $context);
+echo $templatEngine->render('application.mustache', $context);
 
 exit;
-
-
 /*EOF*/
-
-/*
-As is to be expected this project is not the only one to have a fascination with 
-typo's. So to avoid false-positives, a black-list needs to be added for sites/files
-that should not be considered a viable candidate for a pull request.
-
-Another way to go is to expand the list of "known" typos to "as much as possible"
-and check the found text for more typo's. At a given count (3?) such results 
-should be ignored. The typo-count could be added as configurable via the form.
-
-Word input _could_ be checked against wordnik to make sure they don't actually exist.
-If they exist, instead of the Github view, show the Wordnik output.
-@see https://github.com/wordnik/wordnik-php
-
-Sources for more typo's:
-
-- https://github.com/zeke/zeke.sikelianos.com/blob/HEAD/outcasts/index.md
-
-*/
