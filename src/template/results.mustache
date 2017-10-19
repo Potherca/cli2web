@@ -1,39 +1,28 @@
-<!--
-array(8) {
-  ["file_url"]=> "https://github.com/forkwikiman/enha/blob/4742b600191923863638e57877136dcd7e799948/mirror/Mass%20Destruction.md"
--->
-{{# results}}
-<div class="results has-text-centered">
-    <h2 class="title">Search Results</h2>
-    
-    {{# result-list }}
-    <div class="card">
-      <header class="card-header">
-        <p class="card-header-title">
-          <a href="{{ repository_url }}" target="_blank">{{ repository_name }}</a>
-        </p>
-      </header>
-      {{# repository_description }}
-      <p style="padding: .75rem; font-style: italic;">
-        {{ repository_description }}
+
+  <div class="card">
+    <header class="card-header">
+      <p class="card-header-title">
+        <a href="{{ repository_url }}" target="_blank">{{ repository_name }}</a>
       </p>
-      {{/ repository_description }}
-      <div class="card-content">
-        <div class="content">
-            {{& file_fragment }}
-        </div>
+    </header>
+    {{# repository_description }}
+    <p style="padding: .75rem; font-style: italic;">
+      {{ repository_description }}
+    </p>
+    {{/ repository_description }}
+    <div class="card-content">
+      <div class="content">
+          {{& file_fragment }}
       </div>
-      <p><code style="display:block; width: 100%;">{{ file_path }}</code></p>
-      <footer class="card-footer">
-        <p class="card-footer-item">
-          <span class="icon fa fa-star"></span>
-          <span class="">{{ stars }}</span>
-        </p>
-        <p class="card-footer-item">
-          <a href="{{ edit-url }}" target="_blank">Edit</a>
-        </p>
-      </footer>
     </div>
-    {{/ result-list }}
-</div>
-{{/ results}}
+    <p><code style="display:block; width: 100%;">{{ file_path }}</code></p>
+    <footer class="card-footer">
+      <p class="card-footer-item">
+        <span class="icon fa fa-star"></span>
+        <span class="">{{ stars }}</span>
+      </p>
+      <p class="card-footer-item">
+        <a href="{{ edit-url }}" target="_blank">Edit</a>
+      </p>
+    </footer>
+  </div>
