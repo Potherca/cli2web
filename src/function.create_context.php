@@ -12,6 +12,7 @@ function create_context(array $arguments, array $results, $composerContent = '',
     /* Application level values  */
     'description' => '',  // Text explaining how the application is to be used
     'javascript' => [],   // Javascript to load on every page
+    'page_title' => '',   // Page specific override for Title
     'stylesheets' => [],  // Stylesheets to load on every page
     'sub_title' => '',    // description of the application placed beneath the main <H1>
     'title' => '',        // Title of the application, used for the <TITLE> tag and main <H1>

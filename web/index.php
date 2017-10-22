@@ -20,7 +20,7 @@ $callback = '\\Potherca\\GiFiTy\\fetch_results';
 
 $parameters = require $projectPath.'/src/GiFiTy/config.command.php';
 
-$templateLanguage = 'mustache';
+$templateLanguage = 'php';
 $resultTemplatePath = $projectPath.'/src/GiFiTy/template/result.'.$templateLanguage;
 
 $resultTemplate = file_get_contents($resultTemplatePath);
@@ -109,6 +109,18 @@ if ($templateLanguage === 'mustache') {// && class_exists('Mustache_Engine')) {
   // -----------------------------------------------------------------------------
   /* Feed data to main template */
   $content = $templatEngine->render('application.mustache', $context);
+}
+// -----------------------------------------------------------------------------
+
+// -----------------------------------------------------------------------------
+/* Load templates using plan PHP */
+// -----------------------------------------------------------------------------
+if ($templateLanguage === 'php') {
+  // -----------------------------------------------------------------------------
+  /* Create objects*/
+  extract($context);
+  /* Feed data to main template */
+  include $projectPath.'/src/template/php/application.php';
 }
 // =============================================================================
 
