@@ -5,28 +5,65 @@ namespace Potherca\WebApplication\Generic;
 use Dotenv\Dotenv;
 use Mustache_Engine;
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 $projectPath = dirname(__DIR__);
 
 // =============================================================================
-/*/ Specfic Configuration /*/
+/*/ Project specfic configuration /*/
 // -----------------------------------------------------------------------------
 require $projectPath.'/src/GiFiTy/function.fetch_results.php';
 
 $callback = '\\Potherca\\GiFiTy\\fetch_results';
-$interface = [
-  'submit-name' => 'Search',
-  'submit-icon' => 'search',
-];
+
 $parameters = require $projectPath.'/src/GiFiTy/config.command.php';
-$resultTemplate = file_get_contents($projectPath.'/src/GiFiTy/result.mustache');
+
+$templateLanguage = 'mustache';
+$resultTemplatePath = $projectPath.'/src/GiFiTy/template/result.'.$templateLanguage;
+
+$resultTemplate = file_get_contents($resultTemplatePath);
+
+$userContext = [
+  'description' => 'Fill in your faborite typing mistake (typo) in the field below and press the buttin',
+  'project' => ['version' => exec('git tag | tail -n1')],
+  'submit_icon' => 'search',
+  'submit_name' => 'Search',
+  'title' => 'Find Typos on Github',
+];
+
+$valueDecoraters = [
+  'search-term' => function ($searchTerm) {
+    /* Only grab the first word */
+    $words = explode(' ', trim($searchTerm));
+    return array_shift($words);
+  },
+];
+// =============================================================================
+
+// =============================================================================
+/*/ Potherca projects generic configuration /*/
+// -----------------------------------------------------------------------------
+$userContext = array_replace_recursive(
+  $userContext,
+  [
+    'project' => ['author' => 'Potherca'],
+    'stylesheets' => [
+      'https://pother.ca/CssBase/css/created-by-potherca.css',
+      '/application.css',
+    ],
+  ]
+);
 // =============================================================================
 
 // =============================================================================
 /*/ Generic logic /*/
 // -----------------------------------------------------------------------------
-
 require $projectPath.'/vendor/autoload.php';
 
+// =============================================================================
+/*/ Gran things from Disk, DB, Request, Environment, etc. /*/
 // -----------------------------------------------------------------------------
 /* Load `.env` */
 if (is_readable($projectPath . '/.env')) {
@@ -37,68 +74,44 @@ if (is_readable($projectPath . '/.env')) {
 
 // -----------------------------------------------------------------------------
 /* Load GET parameters  */
-$arguments = load_values($parameters, [
-  'search-term' => function ($searchTerm) {
-    /* Only grab the first word */
-    return array_shift(explode(' ', $searchTerm));
-  },
-]);
+$arguments = load_values($parameters, $valueDecoraters);
 
 // -----------------------------------------------------------------------------
-/* Create the result  */
-$results = $callback($arguments);
-
-// -----------------------------------------------------------------------------
-/* Load $context from `composer.json` */
-$context = create_context(
-  json_decode(file_get_contents($projectPath.'/composer.json'), true),
-  [
-    /*/ Generic for all Potherca (blog) projects /*/
-    'project' => ['author' => 'Potherca', 'version' => 'v0.1.0'],
-    'stylesheets' => [
-      'https://pother.ca/CssBase/css/created-by-potherca.css',
-      /*/ GiFiTy Project specific values /*/
-      '/bulma-switch.css',
-      '/application.css',
-    ],
-
-    /*/ GiFiTy Project specific values /*/
-    'description' => 'Fill in your faborite typing mistake (typo) in the field below and press the buttin',
-    'title' => 'Find Typos on Github',
-  ]
-);
-
-
+/* Read `composer.json` content */
+$composerContent = file_get_contents($projectPath.'/composer.json');
+// =============================================================================
 
 // =============================================================================
-/* Load templates */
-// -----------------------------------------------------------------------------
-/* Create objects*/
-$templatEngine = new \Mustache_Engine([
-    // This loader is used for both the original template and the partials.
-    'loader' => new \Mustache_Loader_FilesystemLoader($projectPath.'/src/template/'),
-    // For partials stored in another directory, a loader specifically for partials is needed
-    'partials_loader' => new \Mustache_Loader_CascadingLoader([
-      new \Mustache_Loader_FilesystemLoader($projectPath.'/src/template/'),
-      new \Mustache_Loader_ArrayLoader(['result' =>  $resultTemplate,]),
-    ]),
-]);
+/* Create the result */
+$results = $callback($arguments);
+// =============================================================================
+
+// =============================================================================
+$context = create_context($arguments, $results, $composerContent, $userContext);
+
+// =============================================================================
+/* Load template */
 
 // -----------------------------------------------------------------------------
-/* Create the Form context */
-$form = create_form_context($arguments);
-$form = array_merge($form, $interface);
-
+/* Load templates using mustache */
 // -----------------------------------------------------------------------------
-/* Create Result context */
-$context = array_merge($context, [
-  'results' => count($results),
-  'result-list' => $results,
-], $form);
+if ($templateLanguage === 'mustache') {// && class_exists('Mustache_Engine')) {
+  /* Create objects*/
+  $templatEngine = new \Mustache_Engine([
+      // This loader is used for both the original template and the partials.
+      'loader' => new \Mustache_Loader_FilesystemLoader($projectPath.'/src/template/mustache'),
+      // For partials stored in another directory, a loader specifically for partials is needed
+      'partials_loader' => new \Mustache_Loader_CascadingLoader([
+        new \Mustache_Loader_FilesystemLoader($projectPath.'/src/template/mustache'),
+        new \Mustache_Loader_ArrayLoader(['result' =>  $resultTemplate,]),
+      ]),
+  ]);
+  // -----------------------------------------------------------------------------
+  /* Feed data to main template */
+  $content = $templatEngine->render('application.mustache', $context);
+}
+// =============================================================================
 
-// -----------------------------------------------------------------------------
-/* Feed data to main template */
-echo $templatEngine->render('application.mustache', $context);
-
+echo $content;
 exit;
 /*EOF*/
