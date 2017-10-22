@@ -64,7 +64,7 @@ function fetch_results(array $arguments)
         $parts['5'] = 'edit';   // blob
         // @FIXME: The main branch MIGHT not be `master`, replace hard-coded value with brach from response object
         $parts['6'] = 'master'; // SHA1 hash
-        $result['edit-url'] = implode('/', $parts);
+        $result['edit_url'] = implode('/', $parts);
     });
 
     /* Highlight search term */
