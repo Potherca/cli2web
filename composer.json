@@ -23,6 +23,7 @@
           "Potherca\\WebApplication\\Generic\\": "src/"
       },
       "files" : [
+          "src/function.create_composer_context.php",
           "src/function.create_context.php",
           "src/function.create_form_context.php",
           "src/function.load_values.php"
