@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{{ page-title }}{{^ page-title }}{{ title }}{{/ page-title }}</title>
+  <title>{{ page_title }}{{^ page_title }}{{ title }}{{/ page_title }}</title>
 
   {{# stylesheets }}
   <link rel="stylesheet" href="{{ . }}">
@@ -26,15 +26,15 @@
       position: fixed;
       width: 100%;
     }
-  {{# stylesheet-inline }}
-    {{& stylesheet-inline }}
-  {{/ stylesheet-inline }}
+  {{# stylesheet_inline }}
+    {{& stylesheet_inline }}
+  {{/ stylesheet_inline }}
   </style>
 </head>
 
 <body>
 
-  {{> application-header }}
+  {{> application_header }}
 
   <section class="section coloumns column is-10 is-offset-1">
     {{# messages }}
@@ -59,20 +59,20 @@
     <div class="results has-text-centered">
         <h2 class="title">Search Results ({{ results }})</h2>
 
-        {{# result-list }}
+        {{# result_list }}
           {{> result }}
-        {{/ result-list }}
+        {{/ result_list }}
     </div>
     {{/ results}}
   </section>
 
-  {{> application-footer }}
+  {{> application_footer }}
 
   {{# javascript }}
     <script src="{{ . }}"></script>
   {{/ javascript }}
-  {{# javascript-inline }}
-    <script>{{& javascript-inline }}</script>
-  {{/ javascript-inline }}
+  {{# javascript_inline }}
+    <script>{{& javascript_inline }}</script>
+  {{/ javascript_inline }}
 </body>
 </html>

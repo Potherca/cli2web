@@ -6,14 +6,14 @@
             {{> arguments }}
           {{/ arguments }}
 
-          {{^ single-argument  }}
+          {{^ single_argument  }}
             {{> submit-button }}
-          {{/ single-argument  }}
+          {{/ single_argument  }}
 
         </fieldset>
 
-        {{# has-options }}
-        <details class="options has-text-right"{{# has-option-selected}} open{{/ has-option-selected}}>
+        {{# has_options }}
+        <details class="options has-text-right"{{# has_option_selected}} open{{/ has_option_selected}}>
 
           <summary class="button is-info is-outlined is-centered">
             Options
@@ -30,6 +30,6 @@
           </div>
 
         </details>
-        {{/ has-options }}
+        {{/ has_options }}
 
     </form>

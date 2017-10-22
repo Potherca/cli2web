@@ -10,14 +10,14 @@
     </div>
     {{/ label }}
     <div class="field-body">
-        <div class="field {{# single-argument }}has-addons{{/ single-argument }}">
+        <div class="field {{# single_argument }}has-addons{{/ single_argument }}">
             <div class="control is-expanded">
-                <input 
-                    class="input is-large" 
-                    type="{{ type }}" 
-                    {{# has-autocomplete }}list="{{ name }}-autocomplete"{{/ has-autocomplete }}
-                    name="{{ name }}" 
-                    placeholder="{{ example }}" 
+                <input
+                    class="input is-large"
+                    type="{{ type }}"
+                    {{# has_autocomplete }}list="{{ name }}-autocomplete"{{/ has_autocomplete }}
+                    name="{{ name }}"
+                    placeholder="{{ example }}"
                     {{# value }}value="{{ value }}"{{/ value }}
                     {{^ value}}{{# default }}value="{{ default }}"{{/ default }}{{/ value }}
                 />
@@ -31,11 +31,11 @@
     </div>
 </div>
 
-{{# has-autocomplete }}
+{{# has_autocomplete }}
 <datalist id="{{ name }}-autocomplete">
     {{# autocomplete }}
     <option value="{{ . }}">
     {{/ autocomplete }}
 </datalist>
-{{/ has-autocomplete }}
+{{/ has_autocomplete }}
 
