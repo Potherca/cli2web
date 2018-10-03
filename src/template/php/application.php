@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.0/css/bulma.min.css" integrity="sha256-HEtF7HLJZSC3Le1HcsWbz1hDYFPZCqDhZa9QsCgVUdw=" crossorigin="anonymous" />
 
-  <style type="text/css">
+  <style>
       html {
       background-color: #e7f4fd;
     }
@@ -58,10 +58,11 @@
 
     <? if ($results): ?>
     <div class="results has-text-centered">
-        <h2 class="title">Search Results (<?= htmlentities($results) ?>)</h2>
+        <h2 class="title">Results (<?= htmlentities($results) ?>)</h2>
 
         <? foreach ($result_list as $result): ?>
-          <? include 'data://text/plain;base64,'.base64_encode($resultTemplate) ?>
+          <? /*include 'data://text/plain;base64,'.base64_encode($resultTemplate) */ ?>
+          <? eval($resultTemplate); ?>
         <? endforeach ?>
     </div>
     <? endif ?>
