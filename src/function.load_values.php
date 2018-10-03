@@ -4,7 +4,11 @@ namespace Potherca\WebApplication\Generic;
 
 function load_values($parameters, array $values = [])
 {
-    $arguments = [];
+    $arguments = [
+        'arguments' => [],
+        'flags' => [],
+        'options' => [],
+    ];
 
     $availableParameters= array_merge($parameters['arguments'], $parameters['flags'], $parameters['options']);
     $availableParameters =  array_column($availableParameters, 'name');
