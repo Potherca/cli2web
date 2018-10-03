@@ -1,20 +1,22 @@
 {
-    "name": "potherca/github-find-typos",
-    "description": "Finding typo's in the most popular github repositories made easy.",
-    "type": "project",
-    "homepage": "https://blog.pother.ca/github-find-typos",
-    "license": "GPL-3.0",
+    "name": "potherca/cli2web",
+    "description": "",
+    "type": "library",
+    "homepage": "https://pother.ca/cli2web",
+    "license": "GPL-3.0-or-later",
     "authors": [
         {
             "name": "Ben Peachey",
-            "email": "potherca@hotmail.com",
+            "email": "potherca@gmail.com",
             "homepage": "https://pother.ca/"
         }
     ],
     "support": {
-        "source": "https://github.com/potherca-blog/github-find-typos"
+        "source": "https://github.com/potherca/cli2web"
     },
     "require": {
+        "php":"^5.6 | ^7.0",
+        "hassankhan/config": "^0.11",
         "mustache/mustache": "^2.12",
         "vlucas/phpdotenv": "^2.4"
     },
@@ -24,6 +26,7 @@
       },
       "files" : [
           "src/function.create_composer_context.php",
+          "src/function.create_content.php",
           "src/function.create_context.php",
           "src/function.create_form_context.php",
           "src/function.load_values.php"

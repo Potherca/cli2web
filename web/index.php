@@ -1,129 +1,137 @@
 <?php
 
-namespace Potherca\WebApplication\Generic;
+namespace Potherca\WebApplication;
 
-use Dotenv\Dotenv;
-use Mustache_Engine;
-
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
-$projectPath = dirname(__DIR__);
+ini_set('display_errors', 1);ini_set('display_startup_errors', 1);error_reporting(E_ALL);
 
 // =============================================================================
-/*/ Project specfic configuration /*/
+/*/ Load any project assets that might be requested.  /*/
 // -----------------------------------------------------------------------------
-require $projectPath.'/src/GiFiTy/function.fetch_results.php';
-
-$callback = '\\Potherca\\GiFiTy\\fetch_results';
-
-$parameters = require $projectPath.'/src/GiFiTy/config.command.php';
-
-$templateLanguage = 'php';
-$resultTemplatePath = $projectPath.'/src/GiFiTy/template/result.'.$templateLanguage;
-
-$resultTemplate = file_get_contents($resultTemplatePath);
-
-$userContext = [
-  'description' => 'Fill in your faborite typing mistake (typo) in the field below and press the buttin',
-  'project' => ['version' => exec('git tag | tail -n1')],
-  'submit_icon' => 'search',
-  'submit_name' => 'Search',
-  'title' => 'Find Typos on Github',
-];
-
-$valueDecoraters = [
-  'search-term' => function ($searchTerm) {
-    /* Only grab the first word */
-    $words = explode(' ', trim($searchTerm));
-    return array_shift($words);
-  },
-];
+if(isset($_SERVER['PATH_INFO']) 
+    && in_array(ltrim($_SERVER['PATH_INFO'],'/'), [
+        'application.css',
+        'bulma-switch.css'
+    ])
+) {
+    $path = dirname(__DIR__).'/web/'.$_SERVER['PATH_INFO'];
+    header('Content-Type: text/css');
+    readfile($path);
+    die;
+}
 // =============================================================================
 
 // =============================================================================
-/*/ Potherca projects generic configuration /*/
+/*/ Default values /*/
 // -----------------------------------------------------------------------------
-$userContext = array_replace_recursive(
-  $userContext,
-  [
-    'project' => ['author' => 'Potherca'],
-    'stylesheets' => [
-      'https://pother.ca/CssBase/css/created-by-potherca.css',
-      '/application.css',
+// @FIXME: These need to come from a config so they can be JOINED
+//         NOT be hard-coded and overwritten in PHP
+isset($callback) || $callback = function (array $arguments) {
+    $value = [];
+    $argument = array_shift($arguments['arguments']);
+    if ($argument['value'] !== null) {
+        $value[] = $argument['value'];
+    }
+    return $value;
+};
+
+isset($parameters) || $parameters = [
+    'arguments' => [
+        [
+            'name' => 'input',
+            'type' => 'text',
+            'autocomplete' => null,
+            'description'=> null,
+            'default' => null,
+            'example' => null,
+        ]
     ],
-  ]
-);
+    'options' => [],
+    'flags' => [],
+];
+
+isset($resultTemplates) || $resultTemplates = [
+    'php' => <<<'PHP'
+        echo "
+        <div class=\"box\">
+            <pre class=\"has-text-left\">${result}</pre>
+        </div>";
+PHP
+    ,
+    'mustache' => <<<'MUSTACHE'
+        <div class="box">
+            <pre class="has-text-left">{{.}}</pre>
+        </div>
+MUSTACHE
+    ,
+];
+
+isset($templateLanguage) || $templateLanguage = 'php';
+isset($resultTemplate)  || $resultTemplate = $resultTemplates[$templateLanguage];
+
+isset($userContext) || $userContext = [
+  'submit_icon' => 'arrow-right',
+  'submit_name' => null,
+];
+
+isset($valueDecoraters) || $valueDecoraters = [
+    'input' => function ($result) {
+        return print_r($result, true);
+    }
+];
 // =============================================================================
 
-// =============================================================================
-/*/ Generic logic /*/
-// -----------------------------------------------------------------------------
-require $projectPath.'/vendor/autoload.php';
 
 // =============================================================================
-/*/ Gran things from Disk, DB, Request, Environment, etc. /*/
+/*/ Grab things from Disk, DB, Request, Environment, etc. /*/
 // -----------------------------------------------------------------------------
+require PROJECT_ROOT.'/vendor/autoload.php';
+
 /* Load `.env` */
-if (is_readable($projectPath . '/.env')) {
-  $dotenv = new Dotenv($projectPath, '.env');
+if (is_readable(PROJECT_ROOT . '/.env')) {
+  $dotenv = new \Dotenv\Dotenv(PROJECT_ROOT, '.env');
   $dotenv->load();
   unset($dotenv);
 }
 
 // -----------------------------------------------------------------------------
-/* Load GET parameters  */
-$arguments = load_values($parameters, $valueDecoraters);
-
-// -----------------------------------------------------------------------------
 /* Read `composer.json` content */
-$composerContent = file_get_contents($projectPath.'/composer.json');
+$project = json_decode(file_get_contents(PROJECT_ROOT.'/composer.json'), true);
 // =============================================================================
 
+
+
 // =============================================================================
+// Call "Potherca\WebApplication" logic
+// -----------------------------------------------------------------------------
+$userContext = \Potherca\WebApplication\Generic\create_potherca_context($userContext);
+
+/* Load GET parameters  */
+$arguments = \Potherca\WebApplication\Generic\load_values(
+  $parameters,      // array - configures which arguments, options and flags are available
+  $valueDecoraters  // array - values or callbacks that are applied to the user input values
+);
+
 /* Create the result */
 $results = $callback($arguments);
+
+/* Context the UI content is based on */
+$context =\Potherca\WebApplication\Generic\create_context(
+  $arguments,   // array - Created by "potherca/webapplication"
+  $results,     // array - Created by "callback"
+  $project,     // array - from `composer.json` content
+  $userContext  // array - override values in the context that is fead to the templates
+);
+
+/* Create UI content */
+$content = \Potherca\WebApplication\Generic\create_content(
+  $templateLanguage,  // language the result template is written in. Can be plain PHP or Mustache
+  $resultTemplate,    // string that consists of the template the result array is fed to
+  $context            // Created by "potherca/webapplication"
+);
 // =============================================================================
 
-// =============================================================================
-$context = create_context($arguments, $results, $composerContent, $userContext);
-
-// =============================================================================
-/* Load template */
-
-// -----------------------------------------------------------------------------
-/* Load templates using mustache */
-// -----------------------------------------------------------------------------
-if ($templateLanguage === 'mustache') {// && class_exists('Mustache_Engine')) {
-  /* Create objects*/
-  $templatEngine = new \Mustache_Engine([
-      // This loader is used for both the original template and the partials.
-      'loader' => new \Mustache_Loader_FilesystemLoader($projectPath.'/src/template/mustache'),
-      // For partials stored in another directory, a loader specifically for partials is needed
-      'partials_loader' => new \Mustache_Loader_CascadingLoader([
-        new \Mustache_Loader_FilesystemLoader($projectPath.'/src/template/mustache'),
-        new \Mustache_Loader_ArrayLoader(['result' =>  $resultTemplate,]),
-      ]),
-  ]);
-  // -----------------------------------------------------------------------------
-  /* Feed data to main template */
-  $content = $templatEngine->render('application.mustache', $context);
-}
-// -----------------------------------------------------------------------------
-
-// -----------------------------------------------------------------------------
-/* Load templates using plan PHP */
-// -----------------------------------------------------------------------------
-if ($templateLanguage === 'php') {
-  // -----------------------------------------------------------------------------
-  /* Create objects*/
-  extract($context);
-  /* Feed data to main template */
-  include $projectPath.'/src/template/php/application.php';
-}
-// =============================================================================
 
 echo $content;
 exit;
+
 /*EOF*/
