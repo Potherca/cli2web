@@ -1,4 +1,6 @@
 # CLI2Web (CommandLine Interface to Web)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FPotherca%2Fcli2web.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FPotherca%2Fcli2web?ref=badge_shield)
+
 
 ## Introduction
 
@@ -39,3 +41,7 @@ For more advanced scenario's any of the following steps can also be taken:
   <small>(instead of the output being displayed directly, "raw", as-is)</small>
 - Add custom UI to display the returned output
   <small>(instead of the output being displayed as plain-text)</small>
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FPotherca%2Fcli2web.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2FPotherca%2Fcli2web?ref=badge_large)
