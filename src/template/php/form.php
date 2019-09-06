@@ -2,34 +2,34 @@
 
         <fieldset class="box has-text-centered">
 
-          <? foreach($arguments as $argument): ?>
-            <? include('arguments.php') ?>
-          <? endforeach ?>
+          <?php foreach($arguments as $argument): ?>
+            <?php include('arguments.php') ?>
+          <?php endforeach ?>
 
-          <? if (! $single_argument): ?>
-            <? include('submit-button.php') ?>
-          <? endif ?>
+          <?php if (! $single_argument): ?>
+            <?php include('submit-button.php') ?>
+          <?php endif ?>
 
         </fieldset>
 
-        <? if ($has_options): ?>
-        <details class="options has-text-right"<? if($has_option_selected): ?> open<? endif ?>>
+        <?php if ($has_options): ?>
+        <details class="options has-text-right"<?php if($has_option_selected): ?> open<?php endif ?>>
 
           <summary class="button is-info is-outlined is-centered">
             Options
           </summary>
 
           <div class="box has-text-left">
-            <? foreach($flags as $flag): ?>
-              <? include('flags.php') ?>
-            <? endforeach ?>
+            <?php foreach($flags as $flag): ?>
+              <?php include('flags.php') ?>
+            <?php endforeach ?>
 
-            <? foreach($options as $option): ?>
-              <? include('options.php') ?>
-            <? endforeach ?>
+            <?php foreach($options as $option): ?>
+              <?php include('options.php') ?>
+            <?php endforeach ?>
           </div>
 
         </details>
-        <? endif ?>
+        <?php endif ?>
 
     </form>

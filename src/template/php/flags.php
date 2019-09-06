@@ -20,7 +20,7 @@
           name="<?= htmlentities($flag['name']) ?>"
           type="checkbox"
           value="true"
-          <? if($flag['value']): ?>checked<? endif ?>
+          <?php if($flag['value']): ?>checked<?php endif ?>
         />
         <label class="label is-medium" for="<?= htmlentities($flag['name']) ?>" title="<?= htmlentities($flag['description']) ?>">&nbsp;</label>
       </div>

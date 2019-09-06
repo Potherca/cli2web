@@ -13,9 +13,9 @@
           id="<?= htmlentities($option['name']) ?>"
           name="<?= htmlentities($option['name']) ?>"
           type="<?= htmlentities($option['type']) ?>"
-          <? if($option['value']): ?>value="<?= htmlentities($option['value']) ?>"
-          <? elseif($option['default']): ?>data-value="<?= htmlentities($option['default']) ?>"<? endif ?>
-          <? if($option['default']): ?>placeholder="<?= htmlentities($option['default']) ?>"<? endif ?>
+          <?php if($option['value']): ?>value="<?= htmlentities($option['value']) ?>"
+          <?php elseif($option['default']): ?>data-value="<?= htmlentities($option['default']) ?>"<?php endif ?>
+          <?php if($option['default']): ?>placeholder="<?= htmlentities($option['default']) ?>"<?php endif ?>
         />
       </div>
       <p class="help is-info"><?= htmlentities($option['description']) ?></p>
