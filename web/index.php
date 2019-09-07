@@ -90,7 +90,7 @@ require PROJECT_ROOT.'/vendor/autoload.php';
 
 /* Load `.env` */
 if (is_readable(PROJECT_ROOT . '/.env')) {
-  $dotenv = new \Dotenv\Dotenv(PROJECT_ROOT, '.env');
+  $dotenv = \Dotenv\Dotenv::create(PROJECT_ROOT, '.env');
   $dotenv->load();
   unset($dotenv);
 }
@@ -117,7 +117,7 @@ $arguments = \Potherca\WebApplication\Generic\load_values(
 $results = $callback($arguments);
 
 /* Context the UI content is based on */
-$context =\Potherca\WebApplication\Generic\create_context(
+$context = \Potherca\WebApplication\Generic\create_context(
   $arguments,   // array - Created by "potherca/webapplication"
   $results,     // array - Created by "callback"
   $project,     // array - from `composer.json` content
