@@ -6,6 +6,8 @@ function create_form_context($arguments)
 {
   $form = [];
 
+  $value = [];
+
   $defaults = [
     'arguments' => [],
     'flags' => [],
@@ -17,7 +19,14 @@ function create_form_context($arguments)
   /* Sort out autoloading */
   array_walk($arguments['arguments'], function (&$value) {
 
-    if (isset($value['autocomplete']) && is_string($value['autocomplete']) && $value['autocomplete']{0} === '!') {
+    if (isset($value['autocomplete']) === false) {
+      $value['autocomplete'] = [];
+    }
+
+    if (
+      is_string($value['autocomplete'])
+      && $value['autocomplete']{0} === '!'
+    ) {
       $value['autocomplete'] = require substr($value['autocomplete'], 1);
     }
 

@@ -7,7 +7,7 @@ ini_set('display_errors', 1);ini_set('display_startup_errors', 1);error_reportin
 // =============================================================================
 /*/ Load any project assets that might be requested.  /*/
 // -----------------------------------------------------------------------------
-if(isset($_SERVER['PATH_INFO']) 
+if(isset($_SERVER['PATH_INFO'])
     && in_array(ltrim($_SERVER['PATH_INFO'],'/'), [
         'application.css',
         'bulma-switch.css'
@@ -84,6 +84,8 @@ isset($valueDecoraters) || $valueDecoraters = [
 // =============================================================================
 /*/ Grab things from Disk, DB, Request, Environment, etc. /*/
 // -----------------------------------------------------------------------------
+defined('PROJECT_ROOT') || define('PROJECT_ROOT', dirname(__DIR__));
+
 require PROJECT_ROOT.'/vendor/autoload.php';
 
 /* Load `.env` */
