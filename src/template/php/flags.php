@@ -14,7 +14,6 @@
       <div class="control">
         <input
           data-class="input is-info"
-          data-type="<?= htmlentities($flag['type']) ?>"
           class="switch is-rounded is-info is-medium"
           id="<?= htmlentities($flag['name']) ?>"
           name="<?= htmlentities($flag['name']) ?>"
