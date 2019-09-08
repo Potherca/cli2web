@@ -61,8 +61,14 @@
         <h2 class="title">Results (<?= htmlentities($results) ?>)</h2>
 
         <?php foreach ($result_list as $result): ?>
+<?php/*/
+        Eval should only be used as a last resort. Besides obvious security concerns,
+        it is also notouriously slow. Streaming base64 encoded content is prefered
+        but for that to work specific PHP settings need to be enabled, so these need
+        to be checked _first_ and then either eval or stream can be used.
+/*/?>
           <?php /*include 'data://text/plain;base64,'.base64_encode($resultTemplate) */ ?>
-          <?php eval($resultTemplate); ?>
+          <?php eval(' ?>'.$resultTemplate.'<?php '); ?>
         <?php endforeach ?>
     </div>
     <?php endif ?>
