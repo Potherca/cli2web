@@ -4,16 +4,16 @@ namespace Potherca\WebApplication\Generic;
 
 function create_content($templateLanguage, $resultTemplate, $context){
   $projectPath = dirname(__DIR__);
-  
+
   $availableLanguages = [
     /* @TOTOD: Move logic per language into callback */
     'mustache' => function () {},
     'php' => function () {},
   ];
-  
+
   if (array_key_exists($templateLanguage, $availableLanguages) === false) {
     $error = vsprintf(
-      'Template language "%s" is not supported. Must be one of: "%s"', 
+      'Template language "%s" is not supported. Must be one of: "%s"',
       [
         'language' => $templateLanguage,
         'available' => implode('", "', array_keys($availableLanguages)),
@@ -50,6 +50,7 @@ function create_content($templateLanguage, $resultTemplate, $context){
     // -----------------------------------------------------------------------------
     /* Create objects*/
     extract($context);
+
     /* Feed data to main template */
     ob_start(null, 0, PHP_OUTPUT_HANDLER_CLEANABLE | PHP_OUTPUT_HANDLER_REMOVABLE);
     include $projectPath.'/src/template/php/application.php';
