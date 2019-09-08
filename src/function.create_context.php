@@ -42,9 +42,24 @@ function create_context(array $arguments, array $results, array $composer = [], 
   $results = array_filter($results);
   /* Create the result context */
   $resultContext = [
-    'results' => count($results),
-    'result_list' => $results,
+    'error_list' =>[],
+    'errors' => 0,
+    'result_list' => [],
+    'results' => 0,
   ];
+
+  array_walk($results, function ($result) use (&$resultContext) {
+    if ($result instanceof \Exception) {
+      $resultContext['errors']++;
+      $resultContext['error_list'][] = vsprintf('A %s occurred: %s', [
+        get_class($result),
+        $result->getMessage(),
+      ]);
+    } else {
+      $resultContext['results']++;
+      $resultContext['result_list'][] = $result;
+    }
+  });
 
   // -----------------------------------------------------------------------------
   /* Create the form context */

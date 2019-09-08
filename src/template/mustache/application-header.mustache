@@ -23,3 +23,12 @@
     </p>
     {{/ description }}
   </header>
+
+  {{# errors }}
+  <div class="notification is-danger">
+    <button class="delete" onclick="this.parentElement.remove();"></button>
+    {{# error_list }}
+    <p>{{.}}</p>
+    {{/ error_list }}
+  </div>
+  {{/ errors }}

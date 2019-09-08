@@ -5,6 +5,7 @@
       <a href="<?= htmlentities($title_link) ?>">
         <?= htmlentities($title) ?>
       </a>
+
       <?php else: ?>
         <?= htmlentities($title) ?>
       <?php endif ?>
@@ -22,3 +23,12 @@
     </p>
     <?php endif ?>
   </header>
+
+  <?php if ($errors): ?>
+  <div class="notification is-danger">
+    <button class="delete" onclick="this.parentElement.remove();"></button>
+    <?php foreach($error_list as $error): ?>
+    <p><?= $error ?></p>
+    <?php endforeach; ?>
+  </div>
+  <?php endif ?>

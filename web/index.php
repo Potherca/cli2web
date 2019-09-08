@@ -4,6 +4,10 @@ namespace Potherca\WebApplication;
 
 ini_set('display_errors', 1);ini_set('display_startup_errors', 1);error_reporting(E_ALL);
 
+set_error_handler(function ($severity, $message, $file, $line) {
+    throw new \ErrorException($message, -1, $severity, $file, $line);
+});
+
 // =============================================================================
 /*/ Load any project assets that might be requested.  /*/
 // -----------------------------------------------------------------------------
@@ -114,7 +118,11 @@ $arguments = \Potherca\WebApplication\Generic\load_values(
 );
 
 /* Create the result */
-$results = $callback($arguments);
+try {
+    $results = $callback($arguments);
+} catch (\Exception $exception) {
+    $results = [$exception];
+}
 
 /* Context the UI content is based on */
 $context = \Potherca\WebApplication\Generic\create_context(
