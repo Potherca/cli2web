@@ -66,7 +66,7 @@ function create_context(array $arguments, array $results, array $composer = [], 
   $formContext = create_form_context($arguments);
 
   // -----------------------------------------------------------------------------
-  $userContext['stylesheets'][] = '/index.php/bulma-switch.css';
+  $userContext['stylesheets'][] = $_SERVER['SCRIPT_NAME'].'/bulma-switch.css';
 
   // -----------------------------------------------------------------------------
   /* Merge all contexts together */
@@ -102,7 +102,7 @@ function create_potherca_context($userContext) {
       'project' => ['author' => 'Potherca'],
       'stylesheets' => [
         'https://pother.ca/CssBase/css/created-by-potherca.css',
-        '/index.php/application.css',
+        $_SERVER['SCRIPT_NAME'].'/application.css',
       ],
     ]
   );
