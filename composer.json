@@ -15,7 +15,7 @@
         "source": "https://github.com/potherca/cli2web"
     },
     "require": {
-        "php":"^5.6 | ^7.0",
+        "php":"8.3.4",
         "hassankhan/config": "^2.0",
         "mustache/mustache": "^2.12",
         "vlucas/phpdotenv": "^5.0"
